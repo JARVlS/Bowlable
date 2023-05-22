@@ -23,7 +23,7 @@ export default async function installHelmet(app: Express) {
           // Safari doesn't allow using wss:// origins as 'self' from
           // an https:// page, so we have to translate explicitly for
           // it.
-          ROOT_URL.replace(/^http/, "ws"),
+          ROOT_URL.replace(/^http/, "ws").replace(/5678/, "24678"),
         ],
       },
     },

@@ -10,7 +10,7 @@
     "target": "es2018",
     "module": "commonjs"
   },
-  "include": ["src"],
+  "include": ["src", "typed-router.d.ts"],
   "references": [{ "path": "../config" }],
   "ts-node": {
     "compilerOptions": {
