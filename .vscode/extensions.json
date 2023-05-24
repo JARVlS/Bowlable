@@ -6,7 +6,8 @@
     "dbaeumer.vscode-eslint", // ESLint
     "esbenp.prettier-vscode", // Prettier
     "apollographql.vscode-apollo", // GraphQL support
-    "msjsdiag.debugger-for-chrome", // Chrome debugger integration
+    "MisterJ.vue-volar-extention-pack", // Vue 3
+    //"msjsdiag.debugger-for-chrome", // Chrome debugger integration (deprecated in favor of built-in Javascript debugger)
     "ms-vscode-remote.vscode-remote-extensionpack" // OPTIONAL: develop inside of Docker containers
   ]
 }
