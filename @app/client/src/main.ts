@@ -2,9 +2,8 @@ import "./style.css";
 
 import viteSSR, { ClientOnly } from "vite-ssr";
 
+// eslint-disable-next-line import/no-unresolved
 import routes from "~pages";
-
-console.log("routes", routes);
 
 import App from "./App.vue";
 
