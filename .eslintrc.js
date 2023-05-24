@@ -37,11 +37,13 @@ module.exports = {
     },
   },
   settings: {
-    react: {
-      version: "detect",
-    },
-    next: {
-      rootDir: "@app/client/",
+    // helps eslint to validate imports, if they involve a path alias from tsconfig.json
+    "import/resolver": {
+      typescript: {
+        // for options: https://www.npmjs.com/package/eslint-import-resolver-typescript
+        alwaysTryTypes: true,
+        project: ["tsconfig.json", "@app/*/tsconfig.json"],
+      },
     },
   },
   env: {
