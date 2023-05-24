@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "cross-env NODE_ENV=production NODE_OPTIONS=\"$NODE_OPTIONS -r @app/config/env\" vite-ssr build",
+    "build": "cross-env NODE_ENV=production NODE_OPTIONS=\"${NODE_OPTIONS:-} -r @app/config/env\" vite-ssr build",
     "lint": "eslint \"**/*.{vue,ts,js}\"",
     "preview": "vite preview"
   },
