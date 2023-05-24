@@ -3,12 +3,7 @@ const schemaString = readFileSync(`${__dirname}/data/schema.graphql`, "utf8");
 
 module.exports = {
   parser: "@typescript-eslint/parser",
-  extends: [
-    "plugin:vue/vue3-recommended",
-    "plugin:import/errors",
-    "plugin:import/typescript",
-    "prettier",
-  ],
+  extends: ["plugin:import/errors", "plugin:import/typescript", "prettier"],
   plugins: [
     "jest",
     "@typescript-eslint",

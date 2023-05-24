@@ -23,6 +23,8 @@
     "@vue/compiler-sfc": "^3.3.4",
     "@vue/server-renderer": "^3.3.4",
     "cross-env": "^7.0.3",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-vue": "^9.14.0",
     "unplugin-vue-router": "^0.6.4",
     "vite": "^4.3.5",
     "vite-plugin-pages": "^0.30.1",
