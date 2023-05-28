@@ -1,0 +1,42 @@
+diff --git a/cjs/visitor.js b/cjs/visitor.js
+index 8e02f441443a4a1d09e62941f8e159f4ba51d652..6c0ba203ccf49e366ae642143b0bef8675e89955 100644
+--- a/cjs/visitor.js
++++ b/cjs/visitor.js
+@@ -52,13 +52,13 @@ export function use${operationName}() {
+         }
+         if (operationType === 'Subscription') {
+             return `
+-export function use${operationName}<R = ${operationResultType}>(options: Omit<Urql.Use${operationType}Args<never, ${operationVariablesTypes}>, 'query'> = {}, handler?: Urql.SubscriptionHandlerArg<${operationResultType}, R>) {
++export function use${operationName}<R = ${operationResultType}>(options: Omit<Urql.Use${operationType}Args<never, ${operationVariablesTypes}>, 'query'>, handler?: Urql.SubscriptionHandlerArg<${operationResultType}, R>) {
+   return Urql.use${operationType}<${operationResultType}, R, ${operationVariablesTypes}>({ query: ${documentVariableName}, ...options }, handler);
+ };`;
+         }
+         return `
+-export function use${operationName}(options: Omit<Urql.Use${operationType}Args<never, ${operationVariablesTypes}>, 'query'> = {}) {
+-  return Urql.use${operationType}<${operationResultType}>({ query: ${documentVariableName}, ...options });
++export function use${operationName}(options: Omit<Urql.Use${operationType}Args<never, ${operationVariablesTypes}>, 'query'>) {
++  return Urql.use${operationType}<${operationResultType}, ${operationVariablesTypes}>({ query: ${documentVariableName}, ...options });
+ };`;
+     }
+     buildOperation(node, documentVariableName, operationType, operationResultType, operationVariablesTypes) {
+diff --git a/esm/visitor.js b/esm/visitor.js
+index d57345632eb26b03d90e67c111859a6a6390eb87..8441bdf0b3a45d94f77d3689622a25076239b02b 100644
+--- a/esm/visitor.js
++++ b/esm/visitor.js
+@@ -48,13 +48,13 @@ export function use${operationName}() {
+         }
+         if (operationType === 'Subscription') {
+             return `
+-export function use${operationName}<R = ${operationResultType}>(options: Omit<Urql.Use${operationType}Args<never, ${operationVariablesTypes}>, 'query'> = {}, handler?: Urql.SubscriptionHandlerArg<${operationResultType}, R>) {
++export function use${operationName}<R = ${operationResultType}>(options: Omit<Urql.Use${operationType}Args<never, ${operationVariablesTypes}>, 'query'>, handler?: Urql.SubscriptionHandlerArg<${operationResultType}, R>) {
+   return Urql.use${operationType}<${operationResultType}, R, ${operationVariablesTypes}>({ query: ${documentVariableName}, ...options }, handler);
+ };`;
+         }
+         return `
+-export function use${operationName}(options: Omit<Urql.Use${operationType}Args<never, ${operationVariablesTypes}>, 'query'> = {}) {
+-  return Urql.use${operationType}<${operationResultType}>({ query: ${documentVariableName}, ...options });
++export function use${operationName}(options: Omit<Urql.Use${operationType}Args<never, ${operationVariablesTypes}>, 'query'>) {
++  return Urql.use${operationType}<${operationResultType}, ${operationVariablesTypes}>({ query: ${documentVariableName}, ...options });
+ };`;
+     }
+     buildOperation(node, documentVariableName, operationType, operationResultType, operationVariablesTypes) {

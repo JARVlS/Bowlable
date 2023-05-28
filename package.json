@@ -84,7 +84,8 @@
   },
   "resolutions": {
     "graphql": "16.1.0-experimental-stream-defer.6",
-    "pg-connection-string": "2.x"
+    "pg-connection-string": "2.x",
+    "@graphql-codegen/typescript-vue-urql@^2.3.6": "patch:@graphql-codegen/typescript-vue-urql@npm%3A2.3.6#./.yarn/patches/@graphql-codegen-typescript-vue-urql-npm-2.3.6-dd8d543d29.patch"
   },
   "workspaces": {
     "packages": [
