@@ -1,22 +1,15 @@
 <script setup lang="ts">
-import HelloWorld from "./components/HelloWorld.vue";
+// about combining <suspense> with <router-view>: https://vuejs.org/guide/built-ins/suspense.html#combining-with-other-components
 </script>
 
 <template>
-  <router-view></router-view>
+  <router-view v-slot="{ Component }">
+    <keep-alive>
+      <suspense>
+        <component :is="Component" />
+        <template #fallback> Loading... </template>
+      </suspense>
+    </keep-alive>
+  </router-view>
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>

@@ -1,5 +1,7 @@
 import { cacheExchange, Client, fetchExchange, ssrExchange } from "@urql/core";
 
+// urql with server side rendering: https://formidable.com/open-source/urql/docs/advanced/server-side-rendering/
+
 const isServerSide = import.meta.env.SSR;
 
 // The `ssrExchange` must be initialized with `isClient` and `initialState`

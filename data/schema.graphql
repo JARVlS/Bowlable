@@ -74,6 +74,123 @@ type ConfirmAccountDeletionPayload {
   success: Boolean
 }
 
+"""All input for the create `Feed` mutation."""
+input CreateFeedInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Feed` to be created by this mutation."""
+  feed: FeedInput!
+}
+
+"""The output of our create `Feed` mutation."""
+type CreateFeedPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Feed` that was created by this mutation."""
+  feed: Feed
+
+  """An edge for our `Feed`. May be used by Relay 1."""
+  feedEdge(
+    """The method to use when ordering `Feed`."""
+    orderBy: [FeedsOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): FeedsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the create `FeedPost` mutation."""
+input CreateFeedPostInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `FeedPost` to be created by this mutation."""
+  feedPost: FeedPostInput!
+}
+
+"""The output of our create `FeedPost` mutation."""
+type CreateFeedPostPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Feed` that is related to this `FeedPost`."""
+  feed: Feed
+
+  """The `FeedPost` that was created by this mutation."""
+  feedPost: FeedPost
+
+  """An edge for our `FeedPost`. May be used by Relay 1."""
+  feedPostEdge(
+    """The method to use when ordering `FeedPost`."""
+    orderBy: [FeedPostsOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): FeedPostsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `FeedPost`."""
+  sender: User
+}
+
+"""All input for the create `FeedSubscription` mutation."""
+input CreateFeedSubscriptionInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `FeedSubscription` to be created by this mutation."""
+  feedSubscription: FeedSubscriptionInput!
+}
+
+"""The output of our create `FeedSubscription` mutation."""
+type CreateFeedSubscriptionPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Feed` that is related to this `FeedSubscription`."""
+  feed: Feed
+
+  """The `FeedSubscription` that was created by this mutation."""
+  feedSubscription: FeedSubscription
+
+  """An edge for our `FeedSubscription`. May be used by Relay 1."""
+  feedSubscriptionEdge(
+    """The method to use when ordering `FeedSubscription`."""
+    orderBy: [FeedSubscriptionsOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): FeedSubscriptionsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `FeedSubscription`."""
+  subscriber: User
+}
+
 """All input for the `createOrganization` mutation."""
 input CreateOrganizationInput {
   """
@@ -152,6 +269,81 @@ A point in time as described by the [ISO
 8601](https://en.wikipedia.org/wiki/ISO_8601) standard. May or may not include a timezone.
 """
 scalar Datetime
+
+"""All input for the `deleteFeed` mutation."""
+input DeleteFeedInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: UUID!
+}
+
+"""The output of our delete `Feed` mutation."""
+type DeleteFeedPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Feed` that was deleted by this mutation."""
+  feed: Feed
+
+  """An edge for our `Feed`. May be used by Relay 1."""
+  feedEdge(
+    """The method to use when ordering `Feed`."""
+    orderBy: [FeedsOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): FeedsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `deleteFeedSubscription` mutation."""
+input DeleteFeedSubscriptionInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  feedId: UUID!
+
+  """The subscribing user."""
+  subscriberId: UUID!
+}
+
+"""The output of our delete `FeedSubscription` mutation."""
+type DeleteFeedSubscriptionPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Feed` that is related to this `FeedSubscription`."""
+  feed: Feed
+
+  """The `FeedSubscription` that was deleted by this mutation."""
+  feedSubscription: FeedSubscription
+
+  """An edge for our `FeedSubscription`. May be used by Relay 1."""
+  feedSubscriptionEdge(
+    """The method to use when ordering `FeedSubscription`."""
+    orderBy: [FeedSubscriptionsOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): FeedSubscriptionsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `FeedSubscription`."""
+  subscriber: User
+}
 
 """All input for the `deleteOrganization` mutation."""
 input DeleteOrganizationInput {
@@ -241,6 +433,238 @@ type DeleteUserEmailPayload {
     """The method to use when ordering `UserEmail`."""
     orderBy: [UserEmailsOrderBy!]! = [PRIMARY_KEY_ASC]
   ): UserEmailsEdge
+}
+
+"""
+A feed is a (chronologically sorted) container for messages and handed-out materials.
+"""
+type Feed {
+  abstract: String
+  createdAt: Datetime!
+  id: UUID!
+
+  """Private feeds are only visible to their subscribers."""
+  isPrivate: Boolean!
+
+  """Each feed has an optional name."""
+  name: String
+  updatedAt: Datetime!
+}
+
+"""
+A condition to be used against `Feed` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input FeedCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: UUID
+}
+
+"""An input for mutations affecting `Feed`"""
+input FeedInput {
+  """Private feeds are only visible to their subscribers."""
+  isPrivate: Boolean
+
+  """Each feed has an optional name."""
+  name: String
+}
+
+"""Represents an update to a `Feed`. Fields that are set will be updated."""
+input FeedPatch {
+  """Private feeds are only visible to their subscribers."""
+  isPrivate: Boolean
+
+  """Each feed has an optional name."""
+  name: String
+}
+
+type FeedPost {
+  body: String
+  createdAt: Datetime!
+
+  """Reads a single `Feed` that is related to this `FeedPost`."""
+  feed: Feed
+  feedId: UUID!
+  id: UUID!
+  isDeleted: Boolean!
+
+  """Reads a single `User` that is related to this `FeedPost`."""
+  sender: User
+  senderId: UUID
+  updatedAt: Datetime!
+}
+
+"""
+A condition to be used against `FeedPost` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input FeedPostCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: UUID
+}
+
+"""An input for mutations affecting `FeedPost`"""
+input FeedPostInput {
+  body: String
+  feedId: UUID!
+}
+
+"""
+Represents an update to a `FeedPost`. Fields that are set will be updated.
+"""
+input FeedPostPatch {
+  body: String
+  isDeleted: Boolean
+}
+
+"""A connection to a list of `FeedPost` values."""
+type FeedPostsConnection {
+  """
+  A list of edges which contains the `FeedPost` and cursor to aid in pagination.
+  """
+  edges: [FeedPostsEdge!]!
+
+  """A list of `FeedPost` objects."""
+  nodes: [FeedPost!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `FeedPost` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `FeedPost` edge in the connection."""
+type FeedPostsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `FeedPost` at the end of the edge."""
+  node: FeedPost!
+}
+
+"""Methods to use when ordering `FeedPost`."""
+enum FeedPostsOrderBy {
+  ID_ASC
+  ID_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""Users can be subscribed to feeds."""
+type FeedSubscription {
+  createdAt: Datetime!
+
+  """Reads a single `Feed` that is related to this `FeedSubscription`."""
+  feed: Feed
+  feedId: UUID!
+
+  """Maintainers can manage subscriptions and delete the feed."""
+  isMaintainer: Boolean!
+
+  """Reads a single `User` that is related to this `FeedSubscription`."""
+  subscriber: User
+
+  """The subscribing user."""
+  subscriberId: UUID!
+  updatedAt: Datetime!
+}
+
+"""
+A condition to be used against `FeedSubscription` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input FeedSubscriptionCondition {
+  """Checks for equality with the object’s `subscriberId` field."""
+  subscriberId: UUID
+}
+
+"""An input for mutations affecting `FeedSubscription`"""
+input FeedSubscriptionInput {
+  feedId: UUID!
+
+  """The subscribing user."""
+  subscriberId: UUID
+}
+
+"""
+Represents an update to a `FeedSubscription`. Fields that are set will be updated.
+"""
+input FeedSubscriptionPatch {
+  """Maintainers can manage subscriptions and delete the feed."""
+  isMaintainer: Boolean
+}
+
+"""A connection to a list of `FeedSubscription` values."""
+type FeedSubscriptionsConnection {
+  """
+  A list of edges which contains the `FeedSubscription` and cursor to aid in pagination.
+  """
+  edges: [FeedSubscriptionsEdge!]!
+
+  """A list of `FeedSubscription` objects."""
+  nodes: [FeedSubscription!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `FeedSubscription` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `FeedSubscription` edge in the connection."""
+type FeedSubscriptionsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `FeedSubscription` at the end of the edge."""
+  node: FeedSubscription!
+}
+
+"""Methods to use when ordering `FeedSubscription`."""
+enum FeedSubscriptionsOrderBy {
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  SUBSCRIBER_ID_ASC
+  SUBSCRIBER_ID_DESC
+}
+
+"""A connection to a list of `Feed` values."""
+type FeedsConnection {
+  """
+  A list of edges which contains the `Feed` and cursor to aid in pagination.
+  """
+  edges: [FeedsEdge!]!
+
+  """A list of `Feed` objects."""
+  nodes: [Feed!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Feed` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Feed` edge in the connection."""
+type FeedsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Feed` at the end of the edge."""
+  node: Feed!
+}
+
+"""Methods to use when ordering `Feed`."""
+enum FeedsOrderBy {
+  ID_ASC
+  ID_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
 }
 
 """All input for the `forgotPassword` mutation."""
@@ -372,6 +796,30 @@ type Mutation {
     input: ConfirmAccountDeletionInput!
   ): ConfirmAccountDeletionPayload
 
+  """Creates a single `Feed`."""
+  createFeed(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateFeedInput!
+  ): CreateFeedPayload
+
+  """Creates a single `FeedPost`."""
+  createFeedPost(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateFeedPostInput!
+  ): CreateFeedPostPayload
+
+  """Creates a single `FeedSubscription`."""
+  createFeedSubscription(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateFeedSubscriptionInput!
+  ): CreateFeedSubscriptionPayload
+
   """
   An `Organization` is a great way of sharing access to resources between multiple users without compromising security. When you create an organization you will have the 'owner' and 'billing contact' roles. You may invite other users and redistribute these roles.
   """
@@ -389,6 +837,22 @@ type Mutation {
     """
     input: CreateUserEmailInput!
   ): CreateUserEmailPayload
+
+  """Deletes a single `Feed` using a unique key."""
+  deleteFeed(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteFeedInput!
+  ): DeleteFeedPayload
+
+  """Deletes a single `FeedSubscription` using a unique key."""
+  deleteFeedSubscription(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteFeedSubscriptionInput!
+  ): DeleteFeedSubscriptionPayload
 
   """
   Only the 'owner' may delete an organization. This operation cannot be undone, so be sure that it is what you intend.
@@ -529,6 +993,30 @@ type Mutation {
     input: TransferOrganizationOwnershipInput!
   ): TransferOrganizationOwnershipPayload
 
+  """Updates a single `Feed` using a unique key and a patch."""
+  updateFeed(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateFeedInput!
+  ): UpdateFeedPayload
+
+  """Updates a single `FeedPost` using a unique key and a patch."""
+  updateFeedPost(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateFeedPostInput!
+  ): UpdateFeedPostPayload
+
+  """Updates a single `FeedSubscription` using a unique key and a patch."""
+  updateFeedSubscription(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateFeedSubscriptionInput!
+  ): UpdateFeedSubscriptionPayload
+
   """Updates a single `Organization` using a unique key and a patch."""
   updateOrganization(
     """
@@ -554,6 +1042,32 @@ type Mutation {
     """
     input: VerifyEmailInput!
   ): VerifyEmailPayload
+}
+
+"""A connection to a list of `UUID` values."""
+type MySubscribedFeedIdsConnection {
+  """
+  A list of edges which contains the `UUID` and cursor to aid in pagination.
+  """
+  edges: [MySubscribedFeedIdsEdge]!
+
+  """A list of `UUID` objects."""
+  nodes: [UUID]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `UUID` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `UUID` edge in the connection."""
+type MySubscribedFeedIdsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `UUID` at the end of the edge."""
+  node: UUID
 }
 
 type Organization {
@@ -749,6 +1263,144 @@ type PageInfo {
 type Query {
   """The currently logged in user (or null if not logged in)."""
   currentUser: User
+
+  """Get a single `Feed`."""
+  feed(id: UUID!): Feed
+
+  """Get a single `FeedPost`."""
+  feedPost(id: UUID!): FeedPost
+
+  """Reads and enables pagination through a set of `FeedPost`."""
+  feedPosts(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: FeedPostCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `FeedPost`."""
+    orderBy: [FeedPostsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FeedPostsConnection
+
+  """Get a single `FeedSubscription`."""
+  feedSubscription(feedId: UUID!, subscriberId: UUID!): FeedSubscription
+
+  """Reads and enables pagination through a set of `FeedSubscription`."""
+  feedSubscriptions(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: FeedSubscriptionCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `FeedSubscription`."""
+    orderBy: [FeedSubscriptionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FeedSubscriptionsConnection
+
+  """Reads and enables pagination through a set of `Feed`."""
+  feeds(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: FeedCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Feed`."""
+    orderBy: [FeedsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FeedsConnection
+
+  """Reads and enables pagination through a set of `FeedSubscription`."""
+  myFeedSubscriptions(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+  ): FeedSubscriptionsConnection
+
+  """Reads and enables pagination through a set of `Uuid`."""
+  mySubscribedFeedIds(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+  ): MySubscribedFeedIdsConnection
 
   """Get a single `Organization`."""
   organization(id: UUID!): Organization
@@ -996,6 +1648,135 @@ A universally unique identifier as defined by [RFC 4122](https://tools.ietf.org/
 """
 scalar UUID
 
+"""All input for the `updateFeed` mutation."""
+input UpdateFeedInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: UUID!
+
+  """
+  An object where the defined keys will be set on the `Feed` being updated.
+  """
+  patch: FeedPatch!
+}
+
+"""The output of our update `Feed` mutation."""
+type UpdateFeedPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Feed` that was updated by this mutation."""
+  feed: Feed
+
+  """An edge for our `Feed`. May be used by Relay 1."""
+  feedEdge(
+    """The method to use when ordering `Feed`."""
+    orderBy: [FeedsOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): FeedsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `updateFeedPost` mutation."""
+input UpdateFeedPostInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: UUID!
+
+  """
+  An object where the defined keys will be set on the `FeedPost` being updated.
+  """
+  patch: FeedPostPatch!
+}
+
+"""The output of our update `FeedPost` mutation."""
+type UpdateFeedPostPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Feed` that is related to this `FeedPost`."""
+  feed: Feed
+
+  """The `FeedPost` that was updated by this mutation."""
+  feedPost: FeedPost
+
+  """An edge for our `FeedPost`. May be used by Relay 1."""
+  feedPostEdge(
+    """The method to use when ordering `FeedPost`."""
+    orderBy: [FeedPostsOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): FeedPostsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `FeedPost`."""
+  sender: User
+}
+
+"""All input for the `updateFeedSubscription` mutation."""
+input UpdateFeedSubscriptionInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  feedId: UUID!
+
+  """
+  An object where the defined keys will be set on the `FeedSubscription` being updated.
+  """
+  patch: FeedSubscriptionPatch!
+
+  """The subscribing user."""
+  subscriberId: UUID!
+}
+
+"""The output of our update `FeedSubscription` mutation."""
+type UpdateFeedSubscriptionPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Feed` that is related to this `FeedSubscription`."""
+  feed: Feed
+
+  """The `FeedSubscription` that was updated by this mutation."""
+  feedSubscription: FeedSubscription
+
+  """An edge for our `FeedSubscription`. May be used by Relay 1."""
+  feedSubscriptionEdge(
+    """The method to use when ordering `FeedSubscription`."""
+    orderBy: [FeedSubscriptionsOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): FeedSubscriptionsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `FeedSubscription`."""
+  subscriber: User
+}
+
 """All input for the `updateOrganization` mutation."""
 input UpdateOrganizationInput {
   """
@@ -1079,6 +1860,35 @@ type User {
   """Optional avatar URL."""
   avatarUrl: String
   createdAt: Datetime!
+
+  """Reads and enables pagination through a set of `FeedSubscription`."""
+  feedSubscriptionsBySubscriberId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: FeedSubscriptionCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `FeedSubscription`."""
+    orderBy: [FeedSubscriptionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FeedSubscriptionsConnection!
   hasPassword: Boolean
 
   """Unique identifier for the user."""

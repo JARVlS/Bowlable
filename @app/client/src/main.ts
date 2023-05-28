@@ -1,11 +1,15 @@
-import "./style.css";
+// import "./style.css";
 
 import viteSSR, { ClientOnly } from "vite-ssr";
 
+import { ssr, client as urqlClient } from "@src/graphql/client";
+import App from "@src/App.vue";
 // eslint-disable-next-line import/no-unresolved
 import routes from "~pages";
 
-import App from "./App.vue";
+if (!import.meta.env.SSR) {
+  await import("@src/style.css");
+}
 
 export default viteSSR(
   App,
@@ -14,7 +18,7 @@ export default viteSSR(
   },
   async (context) => {
     const { app, router, initialState, request } = context;
-    app.component(ClientOnly.name, ClientOnly);
+    app.component(ClientOnly.name, ClientOnly).provide("$urql", urqlClient);
 
     // prepare initial state
     if (import.meta.env.SSR) {
@@ -27,6 +31,13 @@ export default viteSSR(
       next();
     });
 
-    app.provide("initialState", initialState);
+    // serialize or load initial state for graphql
+    if (import.meta.env.SSR) {
+      initialState.urql = JSON.stringify(ssr.extractData());
+    } else if (initialState.uqrl) {
+      ssr.restoreData(JSON.parse(initialState.uqrl));
+    }
+
+    return { app, router, initialState };
   }
 );

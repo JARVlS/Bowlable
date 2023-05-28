@@ -1,0 +1,11 @@
+query FetchFeeds {
+  feeds {
+    nodes {
+      id
+      name
+      abstract
+      createdAt
+      isPrivate
+    }
+  }
+}
