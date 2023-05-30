@@ -2,6 +2,7 @@
 
 import viteSSR, { ClientOnly } from "vite-ssr";
 
+import urql from "@urql/vue";
 import { ssr, client as urqlClient } from "@src/graphql/client";
 import App from "@src/App.vue";
 // eslint-disable-next-line import/no-unresolved
@@ -18,7 +19,7 @@ export default viteSSR(
   },
   async (context) => {
     const { app, router, initialState, request } = context;
-    app.component(ClientOnly.name, ClientOnly).provide("$urql", urqlClient);
+    app.use(urql, urqlClient).component(ClientOnly.name, ClientOnly);
 
     // prepare initial state
     if (import.meta.env.SSR) {

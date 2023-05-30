@@ -1,3 +1,66 @@
+create extension if not exists "uuid-ossp";
+create extension if not exists "btree_gist";
+
+drop table if exists app_public.alley_bookings;
+drop table if exists app_public.bookings;
+drop table if exists app_public.bowling_alleys;
+
+--
+
+create table app_public.bowling_alleys (
+  id uuid primary key default uuid_generate_v1mc(),
+  organization_id uuid not null
+    constraint organization
+      references app_public.organizations (id)
+      on update cascade on delete cascade,
+  name text not null,
+  constraint unique_name_within_organization
+    unique (organization_id, name),
+  maximum_number_of_players smallint check (maximum_number_of_players between 1 and 100)
+);
+
+
+create table app_public.bookings (
+  id uuid primary key default uuid_generate_v1mc(),
+  user_id uuid default app_public.current_user_id(),
+  number_of_shoes smallint,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+select 1;
+
+create table app_public.alley_bookings (
+  booking_id uuid not null
+    constraint booking
+      references app_public.bookings (id)
+      on update cascade on delete cascade,
+  alley_id uuid not null
+    constraint alley
+      references app_public.bowling_alleys (id)
+      on update cascade on delete cascade,
+  timeslot tstzrange not null,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  constraint alley_bookings_pk
+    primary key (booking_id, alley_id),
+  constraint non_colliding_timeslots
+    exclude using gist (alley_id with =, timeslot with &&)
+);
+
+
+
+
+
+create trigger _100_timestamps
+  before insert or update on app_public.bookings
+  for each row
+  execute procedure app_private.tg__timestamps();
+
+
+
+
+
 /*
 
 This project is using Graphile Migrate to manage migrations; please be aware

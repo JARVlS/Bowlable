@@ -1,0 +1,10 @@
+query CurrentUser {
+  currentUser {
+    id
+    username
+    name
+    avatarUrl
+    createdAt
+    updatedAt
+  }
+}

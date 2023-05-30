@@ -14,6 +14,7 @@
     "@vueuse/core": "^10.1.2",
     "@vueuse/head": "^1.1.26",
     "graphql": "^16.6.0",
+    "graphql-ws": "^5.13.1",
     "vite-ssr": "^0.17.1",
     "vite-tsconfig-paths": "^4.2.0",
     "vue": "^3.3.4",
