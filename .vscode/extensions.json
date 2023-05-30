@@ -7,6 +7,8 @@
     "esbenp.prettier-vscode", // Prettier
     "apollographql.vscode-apollo", // GraphQL support
     "MisterJ.vue-volar-extention-pack", // Vue 3
+    "mtxr.sqltools", // SQL tools
+    "mtxr.sqltools-driver-pg", // PostgreSQL support for SQL tools
     //"msjsdiag.debugger-for-chrome", // Chrome debugger integration (deprecated in favor of built-in Javascript debugger)
     "ms-vscode-remote.vscode-remote-extensionpack" // OPTIONAL: develop inside of Docker containers
   ]

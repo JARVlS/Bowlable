@@ -33,5 +33,19 @@
   },
   "[markdown]": {
     "files.trimTrailingWhitespace": false
+  },
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "database": "bowlable",
+      "username": "timo",
+      "name": "bowlable"
+    }
+  ],
+  "[vue]": {
+    "editor.defaultFormatter": "ms-vsliveshare.vsliveshare"
   }
 }
