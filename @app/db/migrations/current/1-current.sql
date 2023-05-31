@@ -1,6 +1,10 @@
 create extension if not exists "uuid-ossp";
 create extension if not exists "btree_gist";
 
+drop function if exists app_public.availability_calendar(timestamptz, timestamptz, interval);
+drop function if exists app_private.workaround_for_availability_calendar();
+drop function if exists app_public.workaround_for_availability_calendar();
+drop type if exists app_public.item_of_availability_calendar;
 drop table if exists app_public.alley_bookings;
 drop table if exists app_public.bookings;
 drop table if exists app_public.bowling_alleys;
@@ -19,6 +23,10 @@ create table app_public.bowling_alleys (
   maximum_number_of_players smallint check (maximum_number_of_players between 1 and 100)
 );
 
+grant select on app_public.bowling_alleys to :DATABASE_VISITOR;
+grant insert (id, organization_id, name) on app_public.bowling_alleys to :DATABASE_VISITOR;
+grant update (name) on app_public.bowling_alleys to :DATABASE_VISITOR;
+grant delete on app_public.bowling_alleys to :DATABASE_VISITOR;
 
 create table app_public.bookings (
   id uuid primary key default uuid_generate_v1mc(),
@@ -28,7 +36,10 @@ create table app_public.bookings (
   updated_at timestamptz not null default now()
 );
 
-select 1;
+grant select on app_public.bookings to :DATABASE_VISITOR;
+grant insert (id, user_id, number_of_shoes) on app_public.bookings to :DATABASE_VISITOR;
+grant update (number_of_shoes) on app_public.bookings to :DATABASE_VISITOR;
+grant delete on app_public.bookings to :DATABASE_VISITOR;
 
 create table app_public.alley_bookings (
   booking_id uuid not null
@@ -48,9 +59,10 @@ create table app_public.alley_bookings (
     exclude using gist (alley_id with =, timeslot with &&)
 );
 
-
-
-
+grant select on app_public.alley_bookings to :DATABASE_VISITOR;
+grant insert (booking_id, alley_id, timeslot) on app_public.alley_bookings to :DATABASE_VISITOR;
+grant update (alley_id, timeslot) on app_public.alley_bookings to :DATABASE_VISITOR;
+grant delete on app_public.alley_bookings to :DATABASE_VISITOR;
 
 create trigger _100_timestamps
   before insert or update on app_public.bookings
@@ -58,7 +70,69 @@ create trigger _100_timestamps
   execute procedure app_private.tg__timestamps();
 
 
+create type app_public.item_of_availability_calendar as (
+    starts_at timestamptz,
+    ends_at timestamptz,
+    timeslot tstzrange,
+    id uuid,
+    is_available boolean
+  );
 
+comment on type app_public.item_of_availability_calendar is E'@primaryKey id,starts_at\n@foreignKey (id) references app_public.bowling_alleys (id)|@fieldName alley';
+
+grant usage on type app_public.item_of_availability_calendar to :DATABASE_VISITOR;
+
+create function app_public.availability_calendar(
+  from_start_time timestamptz,
+  until_end_time timestamptz,
+  size_of_timeslot interval
+)
+  returns setof app_public.item_of_availability_calendar
+  language sql
+  stable
+as $$
+with
+prepare_timeslots as (
+  select
+  generate_series(from_start_time, until_end_time, size_of_timeslot) as starts_at,
+  generate_series(from_start_time + size_of_timeslot, until_end_time, size_of_timeslot) as ends_at
+),
+timeslots as (
+  select
+    prepare_timeslots.*,
+    tstzrange(starts_at, ends_at, '[)') as timeslot
+  from prepare_timeslots
+)
+select
+  ts.starts_at,
+  ts.ends_at,
+  ts.timeslot,
+  a.id,
+  availability.is_available
+from timeslots as ts
+-- CROSS JOINS combine all rows from the LEFT table with all ROWS from the RIGHT table (if we have 100 rows in the left table and 4 rows in the right table, this is 400 rows for the resulting table)
+cross join app_public.bowling_alleys as a
+-- LATERAL JOINS can use previously assigned table aliases from the outer query
+cross join lateral (
+  select not exists (
+    select
+    from app_public.alley_bookings as b
+    where
+      a.id = b.alley_id
+      and ts.timeslot && b.timeslot
+  ) as is_available
+) as availability
+$$;
+
+grant execute on function app_public.availability_calendar(timestamptz, timestamptz, interval) to :DATABASE_VISITOR;
+
+create function app_public.workaround_for_availability_calendar()
+returns app_public.item_of_availability_calendar
+language sql
+stable
+as $$ select null::timestamptz, null::timestamptz, null::tstzrange, null::uuid, null::boolean $$;
+
+grant execute on function app_public.workaround_for_availability_calendar() to :DATABASE_VISITOR;
 
 
 /*
